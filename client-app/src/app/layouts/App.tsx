@@ -1,39 +1,76 @@
-import React, { Component } from "react";
-import { Header, Icon, List } from "semantic-ui-react";
+import React, { useState, useEffect, Fragment } from "react";
+import { Container } from "semantic-ui-react";
 import axios from "axios";
 import { IActivity } from "../models/activity";
+import { NavBar } from "../../features/nav/NavBar";
+import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
 
+const App = () => {
+  const [activities, setActivities] = useState<IActivity[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
+    null
+  );
+  const [editMode,setEditMode] = useState(false);
 
-interface IState{
-  activities: IActivity[]
-}
-class App extends Component<{},IState> {
-  readonly state: IState = {
-    activities: [],
+  const handleSelectedActivity = (id: string) => {
+    setSelectedActivity(activities.filter((a) => a.id === id)[0]);
+    setEditMode(false);
   };
-  componentDidMount() {
-    axios.get<IActivity[]>("http://localhost:5000/api/activities").then((response) => {      
-      this.setState({
-        activities: response.data,
-      });
-    });    
-  }
-  render() {
-    return (
-      <div>
-        <Header as="h2">
-          <Icon name="users" />
-          <Header.Content>Rectivities</Header.Content>
-        </Header>
-        <List>         
-        {this.state.activities.map((value) => (
-          <List.Item key={value.id}>{value.title}</List.Item>            
-          ))}         
-        </List>        
-      </div>
-    );
-  }
-}
 
+  const handleOpenCreateForm = () =>{
+    setSelectedActivity(null);
+    setEditMode(true);
+  };
+
+  const handleCreateActivity = (activity: IActivity) => {
+    setActivities([...activities, activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
+
+  const handleEditActivity = (activity: IActivity) => {
+    setActivities([...activities.filter(a => a.id !== activity.id), activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
+
+  const handleDeleteActivity = (id: string) => {
+    setActivities([...activities.filter(a => a.id !== id)]);
+  }; 
+
+  useEffect(() => {
+    axios
+      .get<IActivity[]>("http://localhost:5000/api/activities")
+      .then((response) => {
+        let acts: IActivity[] = [];
+        response.data.forEach(act => {
+          act.date = act.date.split('.')[0];
+          acts.push(act);
+        });        
+        setActivities(acts);
+      });
+  }, []);
+
+  return (
+    <Fragment>
+      <NavBar openCreateForm={handleOpenCreateForm} />
+      <Container style={{ marginTop: "7em" }}>
+        <ActivityDashboard
+          activities={activities}
+          selectActivity={handleSelectedActivity}
+          selectedActivity ={selectedActivity}
+          editMode ={editMode}
+          setEditMode ={setEditMode}
+          setSelectedActivity = {setSelectedActivity}
+          createActivity= {handleCreateActivity}
+          editActivity= {handleEditActivity}
+          deleteActivity= {handleDeleteActivity}
+          //selectedActivity ={selectedActivity!} this instead of 
+
+        />
+      </Container>
+    </Fragment>
+  );
+};
 
 export default App;
