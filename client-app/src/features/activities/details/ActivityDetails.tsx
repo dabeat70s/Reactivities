@@ -15,13 +15,10 @@ const ActivityDetails: React.FC<RouteComponentProps<Wesent>> = ({
 }) => {
   const activityStore = useContext(ActivityStore);
   const {
-    activity,
-    //openEditForm,
-    //cancelSelectedActivity,
+    activity,   
     loadActivity,
     loadingInitial,
   } = activityStore;
-  //return <h1>Activity Details</h1>
   useEffect(() => {
     loadActivity(match.params.id);
   }, [loadActivity, match.params.id]);

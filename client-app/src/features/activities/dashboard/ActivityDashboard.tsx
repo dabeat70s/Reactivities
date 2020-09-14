@@ -1,9 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
-
 import ActivityList  from "./ActivityList";
-// import  ActivityDetails  from "../details/ActivityDetails";
-// import ActivityForm  from "../form/ActivityForm";
 import { observer } from "mobx-react-lite";
 import { LoadingComponent } from "../../../app/layouts/LoadingComponent";
 import ActivityStore from "../../../app/stores/activityStore"
@@ -11,10 +8,6 @@ import ActivityStore from "../../../app/stores/activityStore"
 
 
 const ActivityDashboard: React.FC = () => {
-  // const activityStore = useContext(ActivityStore);
-  // const {editMode, activity} = activityStore;
-
-
   const activityStore = useContext(ActivityStore);
 
   useEffect(() => {
@@ -29,16 +22,7 @@ const ActivityDashboard: React.FC = () => {
         <ActivityList />
       </Grid.Column>
       <Grid.Column width={6}>
-        <h2>Activity Filters</h2>
-        {/* {activity && !editMode && (
-          <ActivityDetails />
-        )}
-        {editMode && (
-          <ActivityForm
-            key={(activity && activity.id) || 0}           
-            activity={activity!}       
-          />
-        )} */}
+        <h2>Activity Filters</h2>       
       </Grid.Column>
     </Grid>
   );

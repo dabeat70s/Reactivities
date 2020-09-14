@@ -6,25 +6,19 @@ import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
 
-// interface IProps {
-//   activity: IActivity;
-// }
 interface weSent {
   id: string;
 }
 
-// const ActivityForm: React.FC<IProps> = ({ activity: initialFormState }) => {
 const ActivityForm: React.FC<RouteComponentProps<weSent>> = ({
   match,
   history,
 }) => {
   const activityStore = useContext(ActivityStore);
-  //const createActivity = activityStore.createActivity;
   const {
     createActivity,
     editActivity,
     submitting,
-    //cancelFormOpen,
     activity: initialFormState,
     loadActivity,
     clearActivity,
@@ -52,27 +46,6 @@ const ActivityForm: React.FC<RouteComponentProps<weSent>> = ({
       };
     
   }, [loadActivity, clearActivity, match.params.id, initialFormState, activity.id.length]);
-
-  //if (loadingInitial || !activity) return <LoadingComponent content='Loading Activity...' />
-
-  // const initializeForm = () => {
-  //   if (initialFormState) {
-  //     return initialFormState;
-  //   } else {
-  //     return {
-  //       id: "",
-  //       title: "",
-  //       category: "",
-  //       description: "",
-  //       date: "",
-  //       city: "",
-  //       venue: "",
-  //     };
-  //   }
-  // };
-
-//  const [activity, setActivity] = useState<IActivity>(initializeForm);
-  
 
   const handleSubmit = () => {
     if (activity.id.length === 0) {
@@ -141,7 +114,7 @@ const ActivityForm: React.FC<RouteComponentProps<weSent>> = ({
           content="Submit"
         />
         <Button
-          onClick= {()=> history.push('/activities')} //{cancelFormOpen}
+          onClick= {()=> history.push('/activities')} 
           floated="right"
           type="button"
           content="Cancel"

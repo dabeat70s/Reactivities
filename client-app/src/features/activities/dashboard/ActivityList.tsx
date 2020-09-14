@@ -8,7 +8,6 @@ const ActivityList: React.FC = () => {
   const activityStore = useContext(ActivityStore);
   const {
     activitiesByDate,
-    //selectActivity,
     deleteActivity,
     submitting,
     target,
@@ -31,7 +30,6 @@ const ActivityList: React.FC = () => {
                 <Button
                   as={Link}
                   to={`/activities/${act.id}`}
-                  //onClick={() => selectActivity(act.id)}
                   floated="right"
                   content="View"
                   color="blue"
