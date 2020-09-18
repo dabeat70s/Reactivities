@@ -26,6 +26,7 @@ namespace API.Controllers
             return await _med.Send(new ActList.Query());
         }
 
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> Details(Guid id)
         {

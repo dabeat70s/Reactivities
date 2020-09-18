@@ -1,13 +1,10 @@
 import React from "react";
-//import "semantic-ui-css/semantic.min.css";
 import { Item, Button, Segment, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-//import ActivityStore from "../../../app/stores/activityStore";
 import { IActivity } from "../../../app/models/activity";
 
 export const ActivityListItem: React.FC<{ act: IActivity }> = ({ act }) => {
-//   const activityStore = useContext(ActivityStore);
-//   const { deleteActivity, submitting, target } = activityStore;
+
   return (
 
 
@@ -42,39 +39,5 @@ export const ActivityListItem: React.FC<{ act: IActivity }> = ({ act }) => {
 
 
 
-
-    // <div>
-    //   <Item key={act.id}>
-    //     <Item.Content>
-    //       <Item.Header as="a">{act.title}</Item.Header>
-    //       <Item.Meta>{act.date}</Item.Meta>
-    //       <Item.Description>
-    //         <div>{act.description}</div>
-    //         <div>
-    //           {act.city},{act.venue}
-    //         </div>
-    //       </Item.Description>
-    //       <Item.Extra>
-    //         <Button
-    //           as={Link}
-    //           to={`/activities/${act.id}`}
-    //           floated="right"
-    //           content="View"
-    //           color="blue"
-    //         />
-
-    //         {/* <Button
-    //               name={act.id}
-    //               loading={target === act.id && submitting}
-    //               onClick={(e) => deleteActivity(e, act.id)}
-    //               floated="right"
-    //               content="Delete"
-    //               color="red"
-    //             /> */}
-    //         <Label basic content={act.category} />
-    //       </Item.Extra>
-    //     </Item.Content>
-    //   </Item>
-    // </div>
   );
 };
