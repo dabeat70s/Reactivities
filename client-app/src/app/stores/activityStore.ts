@@ -14,11 +14,6 @@ class ActivityStore {
   @observable submitting = false;
   @observable target = "";
 
-  // @computed get activitiesByDate(): IActivity[] {
-  //   return Array.from(this.activityRegistry.values()).sort(
-  //     (a, b) => Date.parse(a.date) - Date.parse(b.date)
-  //   );
-  // }
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()))
   }
@@ -30,7 +25,6 @@ class ActivityStore {
     )
     return Object.entries(sortedActivities.reduce((activities, activity) => {
       const date = activity.date.toISOString().split('T')[0];
-      console.log('date in entries', date);// remoovd)))))))
       activities[date] = activities[date] ? [...activities[date], activity] : [activity];
       return activities;
     }, {} as {[key: string]: IActivity[]}));
@@ -42,16 +36,12 @@ class ActivityStore {
     try {
       const activities = await agent.Activities.list();
       runInAction("Loading Activities", () => {
-        activities.forEach(act => {
-          console.log('act = ', act);// remoovd)))))))
-          console.log('act date b4 = ', act.date!);// remoovd)))))))
+        activities.forEach(act => {       
           act.date = new Date(act.date!);
-          console.log('act date afta = ', act.date!);// remoovd)))))))
           this.activityRegistry.set(act.id, act);
         });
         this.loadingInitial = false;
       });
-      console.log('full activs of gruop',this.groupActivitiesByDate(activities)); //movredd))))
     } catch (error) {
       console.log(error);
       runInAction("Load Activities error", () => {
