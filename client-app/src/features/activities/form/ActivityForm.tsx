@@ -120,6 +120,7 @@ const ActivityForm: React.FC<RouteComponentProps<weSent>> = ({
                     render={DateInput}
                     name="date"
                     date={true}
+                    //kstime={false}
                     placeholder="Date"
                     value={activity.date}
                   />

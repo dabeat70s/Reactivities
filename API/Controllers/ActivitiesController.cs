@@ -4,40 +4,35 @@ using System.Threading.Tasks;
 using Application.activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ActivitiesController : ControllerBase
+    public class ActivitiesController : BaseController 
     {
-        private readonly IMediator _med;
-        public ActivitiesController(IMediator med)
-        {
-            _med = med;
-        }
+       
 
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> List()
         {
         
 
-            return await _med.Send(new ActList.Query());
+            return await Med.Send(new ActList.Query());
         }
 
        
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]        
         public async Task<ActionResult<Activity>> Details(Guid id)
         {
-            return await _med.Send(new ActDetails.Query{Id = id});
+            return await Med.Send(new ActDetails.Query{Id = id});
         }
 
 
         [HttpPost]
         public async Task<ActionResult<Unit>> Create(ActCreate.Command cmd)
         {
-            return await _med.Send(cmd);
+            return await Med.Send(cmd);
         }
 
 
@@ -45,13 +40,13 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> Edit(Guid id, ActEdit.Command cmd)
         {
             cmd.Id = id;
-            return await _med.Send(cmd);
+            return await Med.Send(cmd);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
-            return await _med.Send(new ActDelete.Command{Id = id});
+            return await Med.Send(new ActDelete.Command{Id = id});
         }
 
     }
