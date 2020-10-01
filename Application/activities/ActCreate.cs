@@ -1,9 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.activities
@@ -12,7 +14,7 @@ namespace Application.activities
     {
         public class Command : IRequest
         {
-            public Guid Id { get; set; }           
+            public Guid Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public string Category { get; set; }
@@ -39,10 +41,12 @@ namespace Application.activities
 
         public class Handler : IRequestHandler<Command>
         {
-            private readonly DataContext _context;          
+            private readonly DataContext _context;
+            private readonly IUserAccessor _userAc;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccessor userAc)
             {
+                _userAc = userAc;
                 _context = context;
 
             }
@@ -60,9 +64,23 @@ namespace Application.activities
                 };
 
                 _context.Activities.Add(activ);
+                
+                var user = await _context.Users.SingleOrDefaultAsync(x => 
+                    x.UserName == _userAc.GetCurrentUsername());
+
+                var attendee = new UserActivity
+                {
+                    AppUser = user,
+                    Activity = activ,
+                    IsHost = true,
+                    DateJoined = DateTime.Now
+                };
+
+                _context.UserActivities.Add(attendee);
+
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (success )
+                if (success)
                 {
                     return Unit.Value;
                 }
