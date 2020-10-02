@@ -7,7 +7,7 @@ import { RootStoreContext } from "../../../app/stores/rootStore";
 import { ActivityDetailedChats } from "./ActivityDetailedChats";
 import ActivityDetailedHeader from "./ActivityDetailedHeader";
 import { ActivityDetailedInfo } from "./ActivityDetailedInfo";
-import { ActivityDetailedSidebar } from "./ActivityDetailedSidebar";
+import  ActivityDetailedSidebar  from "./ActivityDetailedSidebar";
 
 interface Wesent {
   id: string;
@@ -35,7 +35,7 @@ const ActivityDetails: React.FC<RouteComponentProps<Wesent>> = ({ match, history
         <ActivityDetailedChats />
       </Grid.Column>
       <Grid.Column width={6}>
-        <ActivityDetailedSidebar />
+        <ActivityDetailedSidebar attendees={activity.attendees} />
       </Grid.Column>
     </Grid>
     // <Card fluid>
