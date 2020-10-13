@@ -6,25 +6,28 @@ import { format } from "date-fns";
 import ActivityListItemAttendees from "./ActivityListItemAttendees";
 
 export const ActivityListItem: React.FC<{ act: IActivity }> = ({ act }) => {
-  const host = act.attendees.filter(x=>x.isHost)[0];
+  const host = act.attendees.filter((x) => x.isHost)[0];
 
   return (
-
-
     <Segment.Group>
-    <Segment>
-      <Item.Group>
-        <Item>
-          <Item.Image size='tiny' circular src='/assets/user.png' />
-          <Item.Content>
-            <Item.Header as='a'>{act.title}</Item.Header>
-            <Item.Description>Hosted by {host.displayName}</Item.Description>
-            {act.isHost && (
+      <Segment>
+        <Item.Group>
+          <Item>
+            <Item.Image
+              size="tiny"
+              circular
+              src={host.image ?? "/assets/user.png"}
+              style={{ marginBottom: 3 }}
+            />
+            <Item.Content>
+              <Item.Header as={Link} to={`/activities/${act.id}`} >{act.title}</Item.Header>
+              <Item.Description>Hosted by<Link to={`/profile/${host.username}`} > {host.displayName} </Link> </Item.Description>
+              {act.isHost && (
                 <Item.Description>
                   <Label
                     basic
-                    color='orange'
-                    content='You are hosting this activity'
+                    color="orange"
+                    content="You are hosting this activity"
                   />
                 </Item.Description>
               )}
@@ -32,33 +35,32 @@ export const ActivityListItem: React.FC<{ act: IActivity }> = ({ act }) => {
                 <Item.Description>
                   <Label
                     basic
-                    color='green'
-                    content='You are going to this activity'
+                    color="green"
+                    content="You are going to this activity"
                   />
                 </Item.Description>
               )}
-          </Item.Content>
-        </Item>
-      </Item.Group>
-    </Segment>
-    <Segment>
-      <Icon name='clock' /> {format(act.date!,'h:mm a')}
-      <Icon name='marker' /> {act.venue}, {act.city}
-    </Segment>
-    <Segment secondary><ActivityListItemAttendees attendees={act.attendees} /></Segment>
-    <Segment clearing>
-      <span>{act.description}</span>
-      <Button
-        as={Link}
-        to={`/activities/${act.id}`}
-        floated='right'
-        content='View'
-        color='blue'
-      />
-    </Segment>
-  </Segment.Group>
-
-
-
+            </Item.Content>
+          </Item>
+        </Item.Group>
+      </Segment>
+      <Segment>
+        <Icon name="clock" /> {format(act.date!, "h:mm a")}
+        <Icon name="marker" /> {act.venue}, {act.city}
+      </Segment>
+      <Segment secondary>
+        <ActivityListItemAttendees attendees={act.attendees} />
+      </Segment>
+      <Segment clearing>
+        <span>{act.description}</span>
+        <Button
+          as={Link}
+          to={`/activities/${act.id}`}
+          floated="right"
+          content="View"
+          color="blue"
+        />
+      </Segment>
+    </Segment.Group>
   );
 };
