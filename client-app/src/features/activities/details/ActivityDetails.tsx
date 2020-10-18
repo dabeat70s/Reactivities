@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
 import { LoadingComponent } from "../../../app/layouts/LoadingComponent";
 import { RootStoreContext } from "../../../app/stores/rootStore";
-import { ActivityDetailedChats } from "./ActivityDetailedChats";
+import ActivityDetailedChats  from "./ActivityDetailedChats";
 import ActivityDetailedHeader from "./ActivityDetailedHeader";
 import { ActivityDetailedInfo } from "./ActivityDetailedInfo";
 import  ActivityDetailedSidebar  from "./ActivityDetailedSidebar";
