@@ -12,15 +12,22 @@ namespace API.Controllers
 {
     public class ActivitiesController : BaseController
     {
-
-
         [HttpGet]
-        public async Task<ActionResult<List<ActivityDTO>>> List()
+        public async Task<ActionResult<ActList.ActivitiesEnvelope>> List(int? limit,
+          int? offset, DateTime? startDate, bool isGoing , bool isHost )
         {
-
-
-            return await Med.Send(new ActList.Query());
+            return await Med.Send(new ActList.Query(limit,
+                offset, isGoing, isHost, startDate));
         }
+
+
+        // [HttpGet]
+        // public async Task<ActionResult<List<ActivityDTO>>> List()
+        // {
+
+
+        //     return await Med.Send(new ActList.Query());
+        // }
 
 
         [HttpGet("{id}")]
@@ -44,7 +51,7 @@ namespace API.Controllers
             return await Med.Send(cmd);
         }
 
-        
+
         [HttpDelete("{id}")]
         [Authorize(Policy = "IsActivityHost")]
         public async Task<ActionResult<Unit>> Delete(Guid id)

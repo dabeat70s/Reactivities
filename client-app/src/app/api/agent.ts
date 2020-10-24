@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { IActivity } from '../models/activity';
+import { IActivitiesEnvelope, IActivity } from '../models/activity';
 import { history } from '../..';
 import { toast } from 'react-toastify';
 import { IUser, IUserFormValues } from '../models/user';
@@ -15,7 +15,7 @@ axios.interceptors.request.use((config) => {
     return config;
 }, error => {
     return Promise.reject(error);
-})
+});
 
 
 axios.interceptors.response.use(undefined,( error )=> {
@@ -35,7 +35,7 @@ axios.interceptors.response.use(undefined,( error )=> {
     }
     console.log(error.response);
     throw error.response;
-})
+});
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -58,7 +58,10 @@ const requests = {
 };
 
 const Activities ={
-    list: ():Promise<IActivity[]> => requests.get('/activities'),
+    // list: (limit?: number, page?: number): Promise<IActivitiesEnvelope> => 
+    // requests.get(`/activities?limit=${limit}&offset=${page ? page * limit! : 0}`),
+    list: (params: URLSearchParams): Promise<IActivitiesEnvelope> =>
+    axios.get('/activities', {params: params}).then(sleep(1000)).then(responseBody),
     details: (id:string) => requests.get(`/activities/${id}`),
     create: (activity:IActivity) => requests.post('/activities',activity),
     update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),
@@ -72,7 +75,7 @@ const User = {
     current: (): Promise<IUser> => requests.get('/user'),
     login: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/login`, user),
     register: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/register`, user),
-}
+};
 
 const Profiles = {
     get: (username: string): Promise<IProfile> => requests.get(`/profiles/${username}`),
@@ -82,11 +85,15 @@ const Profiles = {
     deletePhoto: (id: string) => requests.del(`/photos/${id}`),
     follow: (username: string) => requests.post(`/profiles/${username}/follow`,{}),
     unfollow: (username: string) => requests.del(`/profiles/${username}/follow`),
-    listFollowings: (username: string, predicate: string) => requests.get(`/profiles/${username}/follow?predicate=${predicate}`)
-}
+    listFollowings: (username: string, predicate: string) => 
+    requests.get(`/profiles/${username}/follow?predicate=${predicate}`),
+    listActivities: (username: string, predicate: string) =>
+    requests.get(`/profiles/${username}/activities?predicate=${predicate}`)
+
+};
 
 export default{
     Activities,
     User,
     Profiles
-}
+};
