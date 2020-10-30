@@ -30,6 +30,7 @@ namespace Persistence
                 new Value { Id = 3, Name = "Value 103" },
                 new Value { Id = 4, Name = "Value 104" }
             );
+            builder.Entity<Activity>(x=> x.Property(m=>m.Id).HasMaxLength(255));
 
             builder.Entity<UserActivity>(x => x.HasKey(ua =>
                new { ua.AppUserId, ua.ActivityId }));
